@@ -1,4 +1,5 @@
 import {
+  Image,
   ImageBackground,
   Pressable,
   SafeAreaView,
@@ -15,9 +16,13 @@ import Footer_like_icon from '../../../assets/icons/footer_like'
 import Footer_search_icon from '../../../assets/icons/footer_search_icons'
 import { useState } from 'react'
 import { router } from 'expo-router'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Settings from './settings'
 
 export default function Profile () {
   const [activePage, setActivePage] = useState<string>('Profile')
+  const [shorts, setShorts] = useState<string>('shorts')
+  const insets = useSafeAreaInsets()
   const colors = Colors.light
   const choiceHome = () => {
     setActivePage('Home')
@@ -26,14 +31,97 @@ export default function Profile () {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor='transparent'
+        translucent
+      />
       <ImageBackground
-        style={styles.profile_header_bg}
+        style={[styles.profile_header_bg, { paddingTop: insets.top }]}
         source={require('../../../assets/images/profile_header_bg_img.png')}
         resizeMode='cover'
       >
-        <Text>Username</Text>
+        <View style={styles.top_content}>
+          <Text style={styles.username}>@brunopham</Text>
+          <Pressable>
+            <Settings />
+          </Pressable>
+        </View>
+        <Image
+          style={{
+            position: 'absolute',
+            top: '90%',
+            left: '50%',
+            transform: [{ translateX: '-50%' }]
+          }}
+          source={require('../../../assets/images/profile_user.png')}
+          resizeMode='contain'
+        />
       </ImageBackground>
+
+      <View
+        style={{
+          alignItems: 'center',
+          gap: 6,
+          paddingHorizontal: 14
+        }}
+      >
+        <Text style={styles.name}>Bruno Pham</Text>
+        <Text style={styles.countriy}>Da Nang, Vietnam</Text>
+        <View style={styles.follows}>
+          <View style={styles.followers}>
+            <Text style={styles.follow_count}>220</Text>
+            <Text style={styles.follow_title}>Followers</Text>
+          </View>
+          <View style={styles.followers}>
+            <Text style={styles.follow_count}>150</Text>
+            <Text style={styles.follow_title}>Following</Text>
+          </View>
+        </View>
+
+        <View style={styles.shorts}>
+          <Pressable
+            onPress={() => setShorts('shorts')}
+            style={[
+              shorts === 'shorts' && { backgroundColor: Colors.active_bg },
+              styles.shorts_child
+            ]}
+          >
+            <Text style={styles.shorts_title}>0 shorts</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setShorts('collections')}
+            style={[
+              shorts === 'collections' && { backgroundColor: Colors.active_bg },
+              styles.shorts_child
+            ]}
+          >
+            <Text style={styles.shorts_title}>10 Collections</Text>
+          </Pressable>
+        </View>
+
+        {shorts === 'shorts' && (
+          <Image
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 100
+            }}
+            source={require('../../../assets/images/empty_shorts.png')}
+          />
+        )}
+
+        {shorts === 'collections' && (
+          <Image
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 100
+            }}
+            source={require('../../../assets/images/empty_shorts.png')}
+          />
+        )}
+      </View>
 
       <View style={styles.footer}>
         <Pressable
@@ -98,6 +186,87 @@ const styles = StyleSheet.create({
     height: 150
   },
 
+  top_content: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 16,
+    paddingVertical: 16,
+    paddingLeft: '39%'
+  },
+
+  username: {
+    fontFamily: 'Exo700',
+    color: Colors.light,
+    fontSize: 14
+  },
+
+  name: {
+    color: Colors.header_title,
+    fontSize: 20,
+    fontFamily: 'Exo700'
+  },
+
+  countriy: {
+    color: Colors.gray,
+    fontSize: 16,
+    fontFamily: 'Exo500'
+  },
+
+  follows: {
+    width: '100%',
+    height: 40,
+    backgroundColor: Colors.follows,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    borderRadius: 6,
+    marginTop: 14
+  },
+
+  followers: {
+    flexDirection: 'row',
+    gap: 5
+  },
+
+  follow_count: {
+    textAlignVertical: 'center',
+    fontSize: 16,
+    fontFamily: 'Exo700',
+    color: Colors.black
+  },
+
+  follow_title: {
+    textAlignVertical: 'center',
+    fontSize: 16,
+    fontFamily: 'Exo500',
+    color: Colors.personal
+  },
+
+  shorts: {
+    width: '100%',
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderRadius: 6,
+    marginTop: 14
+  },
+
+  shorts_child: {
+    width: '50%',
+    height: '100%',
+    flexDirection: 'row',
+    gap: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 6
+  },
+
+  shorts_title: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontFamily: 'Exo500',
+    color: Colors.personal
+  },
   footer: {
     width: '100%',
     height: 90,
