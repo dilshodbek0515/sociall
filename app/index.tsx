@@ -51,6 +51,11 @@ export default function App () {
   const [categories, setCategories] = useState<string>('Popular')
   const [activePage, setActivePage] = useState<string>('Home')
   const colors = Colors.light
+
+  const choiceProfile = () => {
+    setActivePage('Profile')
+    router.push('/profile/ui')
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -354,7 +359,7 @@ export default function App () {
           <Footer_search_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={() => setActivePage('Likes')}
+          onPress={() => router.push('/welcome')}
           style={[
             styles.footer_content,
             activePage === 'Likes' && { backgroundColor: Colors.likes }
@@ -372,7 +377,7 @@ export default function App () {
           <Footer_friends_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={() => setActivePage('Profile')}
+          onPress={choiceProfile}
           style={[
             styles.footer_content,
             activePage === 'Profile' && { backgroundColor: Colors.likes }

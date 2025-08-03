@@ -1,4 +1,11 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native'
 import { Colors, Gap } from '../../shared/tokkens'
 import { useState } from 'react'
 import EyeOpenIcon from '../../assets/icons/icons-open'
@@ -26,90 +33,97 @@ export default function Signup () {
     form.password.trim() !== ''
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.fullname}>
-        <View style={styles.name}>
-          <Text style={styles.name__title}>Name</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.fullname}>
+          <View style={styles.name}>
+            <Text style={styles.name__title}>Name</Text>
+            <TextInput
+              style={styles.name__input}
+              placeholder='Enter name'
+              placeholderTextColor={Colors.gray}
+              onChangeText={text => setForm(prev => ({ ...prev, name: text }))}
+            />
+          </View>
+          <View style={styles.name}>
+            <Text style={styles.name__title}>Last Name</Text>
+            <TextInput
+              style={styles.name__input}
+              placeholder='Enter last name'
+              placeholderTextColor={Colors.gray}
+              onChangeText={text =>
+                setForm(prev => ({ ...prev, lastName: text }))
+              }
+            />
+          </View>
+        </View>
+
+        <View style={styles.email}>
+          <Text style={styles.name__title}>Email</Text>
           <TextInput
             style={styles.name__input}
-            placeholder='Enter name'
+            placeholder='Enter your email'
             placeholderTextColor={Colors.gray}
-            onChangeText={text => setForm(prev => ({ ...prev, name: text }))}
+            onChangeText={text => setForm(prev => ({ ...prev, email: text }))}
           />
         </View>
-        <View style={styles.name}>
-          <Text style={styles.name__title}>Last Name</Text>
-          <TextInput
-            style={styles.name__input}
-            placeholder='Enter last name'
-            placeholderTextColor={Colors.gray}
-            onChangeText={text =>
-              setForm(prev => ({ ...prev, lastName: text }))
+
+        <View style={styles.phone}>
+          <Text style={styles.name__title}>Phone Number</Text>
+          <IntlPhoneInput
+            defaultCountry='UZ'
+            containerStyle={styles.inputContainer}
+            phoneInputStyle={styles.input}
+            onChangeText={({ phoneNumber }: { phoneNumber: string }) =>
+              setForm(prev => ({ ...prev, phone: phoneNumber }))
             }
           />
         </View>
-      </View>
 
-      <View style={styles.email}>
-        <Text style={styles.name__title}>Email</Text>
-        <TextInput
-          style={styles.name__input}
-          placeholder='Enter your email'
-          placeholderTextColor={Colors.gray}
-          onChangeText={text => setForm(prev => ({ ...prev, email: text }))}
-        />
-      </View>
+        <View style={styles.password}>
+          <Text style={styles.name__title}>Set Password</Text>
+          <TextInput
+            style={styles.name__input}
+            placeholder='Enter your password'
+            placeholderTextColor={Colors.gray}
+            secureTextEntry={!password}
+            onChangeText={text =>
+              setForm(prev => ({ ...prev, password: text }))
+            }
+          />
+          <Pressable
+            style={styles.eyeIcons}
+            onPress={() => setPassword(prev => !prev)}
+          >
+            {password ? <EyeOpenIcon /> : <EyeClosedIcon />}
+          </Pressable>
+        </View>
 
-      <View style={styles.phone}>
-        <Text style={styles.name__title}>Phone Number</Text>
-        <IntlPhoneInput
-          defaultCountry='UZ'
-          containerStyle={styles.inputContainer}
-          phoneInputStyle={styles.input}
-          onChangeText={({ phoneNumber }: { phoneNumber: string }) =>
-            setForm(prev => ({ ...prev, phone: phoneNumber }))
-          }
-        />
-      </View>
-
-      <View style={styles.password}>
-        <Text style={styles.name__title}>Set Password</Text>
-        <TextInput
-          style={styles.name__input}
-          placeholder='Enter your password'
-          placeholderTextColor={Colors.gray}
-          secureTextEntry={!password}
-          onChangeText={text => setForm(prev => ({ ...prev, password: text }))}
-        />
         <Pressable
-          style={styles.eyeIcons}
-          onPress={() => setPassword(prev => !prev)}
-        >
-          {password ? <EyeOpenIcon /> : <EyeClosedIcon />}
-        </Pressable>
-      </View>
-
-      <Pressable
-        onPress={() => router.push('/privacy/privacy')}
-        style={[
-          styles.login_btn,
-          {
-            backgroundColor: isValid ? Colors.active_btn : Colors.boder
-          }
-        ]}
-        disabled={!isValid}
-      >
-        <Text
+          onPress={() => router.push('/privacy/privacy')}
           style={[
-            styles.login_text,
+            styles.login_btn,
             {
-              color: isValid ? Colors.light : Colors.login_btn
+              backgroundColor: isValid ? Colors.active_btn : Colors.boder
             }
           ]}
+          disabled={!isValid}
         >
-          Register
-        </Text>
-      </Pressable>
+          <Text
+            style={[
+              styles.login_text,
+              {
+                color: isValid ? Colors.light : Colors.login_btn
+              }
+            ]}
+          >
+            Register
+          </Text>
+        </Pressable>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -117,7 +131,6 @@ export default function Signup () {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
     gap: Gap.gap16
   },
 
