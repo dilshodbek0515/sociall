@@ -1,0 +1,11 @@
+import Svg, { Path } from 'react-native-svg'
+
+const Gpt = () => (
+  <Svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
+    <Path
+      d='M15 8.99998L11 7.49998L15 5.99848L16.5 2L18.0014 5.99848L22 7.49998L18.0014 8.99998L16.5 13L15 8.99998ZM6.99997 17L2 15L6.99997 13L8.99998 8L11 13L16 15L11 17L8.99998 22L6.99997 17Z'
+      fill='#242323'
+    />
+  </Svg>
+)
+export default Gpt

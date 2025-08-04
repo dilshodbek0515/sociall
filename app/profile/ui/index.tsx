@@ -1,7 +1,10 @@
 import {
+  Animated,
+  Dimensions,
   Image,
   ImageBackground,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -14,13 +17,18 @@ import Footer_profile_icon from '../../../assets/icons/footer-profile_icons'
 import Footer_friends_icon from '../../../assets/icons/footer_friends_icon'
 import Footer_like_icon from '../../../assets/icons/footer_like'
 import Footer_search_icon from '../../../assets/icons/footer_search_icons'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { router } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Settings from './settings'
+import Sideber from '../../sidebar/sidebar'
 export default function Profile () {
   const [activePage, setActivePage] = useState<string>('Profile')
   const [shorts, setShorts] = useState<string>('shorts')
+  const [showSidebar, setShowSidebar] = useState<boolean>(false)
+  const slideAnimation = useRef(
+    new Animated.Value(Dimensions.get('window').width)
+  ).current
   const insets = useSafeAreaInsets()
   const colors = Colors.light
   const choiceHome = () => {
@@ -28,6 +36,24 @@ export default function Profile () {
     router.push('/')
   }
 
+  const openSidebar = () => {
+    setShowSidebar(true)
+    Animated.timing(slideAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false
+    }).start()
+  }
+
+  const closedSidebar = () => {
+    Animated.timing(slideAnimation, {
+      toValue: Dimensions.get('window').width,
+      duration: 300,
+      useNativeDriver: false
+    }).start(() => {
+      setShowSidebar(false)
+    })
+  }
   return (
     <View style={styles.container}>
       <StatusBar
@@ -42,10 +68,11 @@ export default function Profile () {
       >
         <View style={styles.top_content}>
           <Text style={styles.username}>@brunopham</Text>
-          <Pressable>
+          <Pressable onPress={openSidebar}>
             <Settings />
           </Pressable>
         </View>
+
         <Image
           style={{
             position: 'absolute',
@@ -102,20 +129,22 @@ export default function Profile () {
         </View>
 
         {shorts === 'shorts' && (
-          // <Image
-          //   style={{
-          //     alignItems: 'center',
-          //     justifyContent: 'center',
-          //     marginTop: 100
-          //   }}
-          //   source={require('../../../assets/images/empty_shorts.png')}
-          // />
           <ScrollView
             horizontal={true}
             style={styles.scroll_shorts}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 20 }}
           >
+            {shorts.length <= 0 && (
+              <Image
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 100
+                }}
+                source={require('../../../assets/images/empty_shorts.png')}
+              />
+            )}
             <Pressable
               style={{
                 width: 155,
@@ -335,6 +364,13 @@ export default function Profile () {
           <Footer_profile_icon colors={colors} activePage={activePage} />
         </Pressable>
       </View>
+      {showSidebar && (
+        <Sideber
+          insets={insets}
+          closed={closedSidebar}
+          slide={slideAnimation}
+        />
+      )}
     </View>
   )
 }
