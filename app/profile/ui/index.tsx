@@ -2,7 +2,7 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -18,7 +18,6 @@ import { useState } from 'react'
 import { router } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Settings from './settings'
-
 export default function Profile () {
   const [activePage, setActivePage] = useState<string>('Profile')
   const [shorts, setShorts] = useState<string>('shorts')
@@ -62,8 +61,10 @@ export default function Profile () {
       <View
         style={{
           alignItems: 'center',
-          gap: 6,
-          paddingHorizontal: 14
+          paddingHorizontal: 14,
+          marginTop: 50,
+          height: 500,
+          gap: 6
         }}
       >
         <Text style={styles.name}>Bruno Pham</Text>
@@ -101,25 +102,189 @@ export default function Profile () {
         </View>
 
         {shorts === 'shorts' && (
-          <Image
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 100
-            }}
-            source={require('../../../assets/images/empty_shorts.png')}
-          />
+          // <Image
+          //   style={{
+          //     alignItems: 'center',
+          //     justifyContent: 'center',
+          //     marginTop: 100
+          //   }}
+          //   source={require('../../../assets/images/empty_shorts.png')}
+          // />
+          <ScrollView
+            horizontal={true}
+            style={styles.scroll_shorts}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 20 }}
+          >
+            <Pressable
+              style={{
+                width: 155,
+                height: '100%',
+                gap: 5
+              }}
+            >
+              <Image
+                source={require('../../../assets/images/shorts_img.png')}
+                style={{ width: '100%', height: '90%', borderRadius: 10 }}
+                resizeMode='stretch'
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontFamily: 'Exo700',
+                  color: Colors.gray
+                }}
+              >
+                Lorem ipsum!
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                width: 155,
+                height: '100%',
+                gap: 5
+              }}
+            >
+              <Image
+                source={require('../../../assets/images/shorts_img.png')}
+                style={{ width: '100%', height: '90%', borderRadius: 10 }}
+                resizeMode='stretch'
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontFamily: 'Exo700',
+                  color: Colors.gray
+                }}
+              >
+                Lorem ipsum!
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                width: 155,
+                height: '100%',
+                gap: 5
+              }}
+            >
+              <Image
+                source={require('../../../assets/images/shorts_img.png')}
+                style={{ width: '100%', height: '90%', borderRadius: 10 }}
+                resizeMode='stretch'
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontFamily: 'Exo700',
+                  color: Colors.gray
+                }}
+              >
+                Lorem ipsum!
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                width: 155,
+                height: '100%',
+                gap: 5
+              }}
+            >
+              <Image
+                source={require('../../../assets/images/shorts_img.png')}
+                style={{ width: '100%', height: '90%', borderRadius: 10 }}
+                resizeMode='stretch'
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontFamily: 'Exo700',
+                  color: Colors.gray
+                }}
+              >
+                Lorem ipsum!
+              </Text>
+            </Pressable>
+          </ScrollView>
         )}
 
         {shorts === 'collections' && (
-          <Image
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 100
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              width: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: 15
             }}
-            source={require('../../../assets/images/empty_shorts.png')}
-          />
+          >
+            <Pressable style={styles.colloection_card}>
+              <Image
+                style={{ width: '100%', height: 158 }}
+                source={require('../../../assets/images/likes.png')}
+                resizeMode='contain'
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Colors.gray,
+                  fontFamily: 'Exo500'
+                }}
+              >
+                25 shots
+              </Text>
+            </Pressable>
+            <Pressable style={styles.colloection_card}>
+              <Image
+                style={{ width: '100%', height: 158 }}
+                source={require('../../../assets/images/likes.png')}
+                resizeMode='contain'
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Colors.gray,
+                  fontFamily: 'Exo500'
+                }}
+              >
+                25 shots
+              </Text>
+            </Pressable>
+            <Pressable style={styles.colloection_card}>
+              <Image
+                style={{ width: '100%', height: 158 }}
+                source={require('../../../assets/images/likes.png')}
+                resizeMode='contain'
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Colors.gray,
+                  fontFamily: 'Exo500'
+                }}
+              >
+                25 shots
+              </Text>
+            </Pressable>
+            <Pressable style={styles.colloection_card}>
+              <Image
+                style={{ width: '100%', height: 158 }}
+                source={require('../../../assets/images/likes.png')}
+                resizeMode='contain'
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Colors.gray,
+                  fontFamily: 'Exo500'
+                }}
+              >
+                25 shots
+              </Text>
+            </Pressable>
+          </ScrollView>
         )}
       </View>
 
@@ -248,7 +413,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderRadius: 6,
-    marginTop: 14
+    marginTop: 14,
+    marginBottom: 16
   },
 
   shorts_child: {
@@ -267,6 +433,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo500',
     color: Colors.personal
   },
+
+  scroll_shorts: {
+    width: '100%',
+    height: '100%'
+  },
+
+  colloection_card: {
+    width: 158,
+    height: 185,
+
+    justifyContent: 'space-between'
+  },
+
   footer: {
     width: '100%',
     height: 90,
