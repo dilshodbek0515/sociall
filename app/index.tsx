@@ -359,7 +359,7 @@ export default function App () {
           <Footer_search_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={() => router.push('/welcome')}
+          onPress={() => setActivePage('Likes')}
           style={[
             styles.footer_content,
             activePage === 'Likes' && { backgroundColor: Colors.likes }
