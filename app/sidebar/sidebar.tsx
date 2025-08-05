@@ -18,6 +18,7 @@ import Glowly from './icons/glowly'
 import Chip from './icons/chip'
 import Gpt from './icons/gpt'
 import Leave from './icons/leave'
+import { router } from 'expo-router'
 
 export default function Sideber ({ closed, slide, insets }: any) {
   return (
@@ -133,7 +134,10 @@ export default function Sideber ({ closed, slide, insets }: any) {
           <Check />
         </Pressable>
 
-        <Pressable style={styles.sidebar_content}>
+        <Pressable
+          onPress={() => router.push('/logout/ui')}
+          style={styles.sidebar_content}
+        >
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
             <View style={styles.sidebar_child}>
               <Leave />

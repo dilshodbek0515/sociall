@@ -25,7 +25,8 @@ export const Colors = {
   active_bg: '#F1F1FE',
   active_text: '#888BF4',
   search_input_bg: '#F5F5F5',
-  follows: '#F6F7F9'
+  follows: '#F6F7F9',
+  blur: '#FFFFFF33'
 }
 
 export const Gap = {
