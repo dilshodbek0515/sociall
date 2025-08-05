@@ -158,7 +158,7 @@ export default function Profile () {
               />
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 16,
                   fontFamily: 'Exo700',
                   color: Colors.gray
                 }}
@@ -181,7 +181,7 @@ export default function Profile () {
               />
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 16,
                   fontFamily: 'Exo700',
                   color: Colors.gray
                 }}
@@ -204,7 +204,7 @@ export default function Profile () {
               />
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 16,
                   fontFamily: 'Exo700',
                   color: Colors.gray
                 }}
@@ -227,7 +227,7 @@ export default function Profile () {
               />
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 16,
                   fontFamily: 'Exo700',
                   color: Colors.gray
                 }}

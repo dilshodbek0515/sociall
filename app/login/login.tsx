@@ -22,13 +22,13 @@ import Buttons from '../../shared/buttons/Buttons'
 import Signup from '../signup/signup'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
+import { requestLocationPermission } from '../../utils/location'
 
 export default function Login () {
   const [checkbox, setCheckbox] = useState<boolean>(false)
   const [error, setError] = useState<string | undefined>()
   const [active, setActive] = useState<boolean | string>('signup')
   const [{ isLoading, token, error: err }, setLogin] = useAtom(loginAtom)
-
   // inputdan qiymat olish
   const [inputValue, setInputValue] = useState({
     email: 'vasia@pupkin.ru',
