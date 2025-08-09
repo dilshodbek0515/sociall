@@ -22,6 +22,7 @@ import Buttons from '../../shared/buttons/Buttons'
 import Signup from '../signup/signup'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
+import { requestLocationPermission } from '../../utils/location'
 
 export default function Login () {
   const [checkbox, setCheckbox] = useState<boolean>(false)

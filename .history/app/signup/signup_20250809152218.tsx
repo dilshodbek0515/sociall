@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     gap: Gap.gap16,
+    marginTop: -20
   },
 
   fullname: {

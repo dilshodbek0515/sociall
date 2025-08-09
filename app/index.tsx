@@ -56,6 +56,11 @@ export default function App () {
     setActivePage('Profile')
     router.push('/profile/ui')
   }
+
+  const choiceSearch = () => {
+    setActivePage('Search')
+    router.push('/search/ui')
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -350,7 +355,7 @@ export default function App () {
           <Footer_home_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={() => setActivePage('Search')}
+          onPress={choiceSearch}
           style={[
             styles.footer_content,
             activePage === 'Search' && { backgroundColor: Colors.likes }

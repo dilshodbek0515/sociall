@@ -30,14 +30,9 @@ export default function Profile () {
   ).current
   const insets = useSafeAreaInsets()
   const colors = Colors.light
-
   const choiceHome = () => {
     setActivePage('Home')
     router.push('/')
-  }
-  const choiceSearch = () => {
-    setActivePage('Search')
-    router.push('/search/ui')
   }
 
   const openSidebar = () => {
@@ -332,7 +327,7 @@ export default function Profile () {
           <Footer_home_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={choiceSearch}
+          onPress={() => setActivePage('Search')}
           style={[
             styles.footer_content,
             activePage === 'Search' && { backgroundColor: Colors.likes }
@@ -341,7 +336,7 @@ export default function Profile () {
           <Footer_search_icon colors={colors} activePage={activePage} />
         </Pressable>
         <Pressable
-          onPress={() => setActivePage('Likes')}
+          onPress={() => router.push('/welcome')}
           style={[
             styles.footer_content,
             activePage === 'Likes' && { backgroundColor: Colors.likes }

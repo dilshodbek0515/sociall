@@ -131,7 +131,6 @@ export default function Signup () {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    gap: Gap.gap16,
   },
 
   fullname: {
