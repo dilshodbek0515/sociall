@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Image,
-  Modal,
   Pressable,
   StatusBar,
   StyleSheet,
@@ -9,7 +8,8 @@ import {
   View
 } from 'react-native'
 import Inputs from '../../shared/inputs/Inputs'
-import { Gap, Padding, Colors } from '../../shared/tokkens'
+import { Gap, Padding } from '../../shared/tokkens'
+import { Colors } from '../../shared/tokkens'
 import { useState } from 'react'
 import Google from '../../assets/icons/google'
 import Facebook from '../../assets/icons/facebook'
@@ -22,14 +22,13 @@ import Buttons from '../../shared/buttons/Buttons'
 import Signup from '../signup/signup'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
-import LocationPages from '../location'
+import * as Location from 'expo-location'
 
 export default function Login () {
   const [checkbox, setCheckbox] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const [active, setActive] = useState<'login' | 'signup'>('signup')
+  const [active, setActive] = useState('signup')
   const [{ isLoading }, setLogin] = useAtom(loginAtom)
-  const [showLocationModal, setShowLocationModal] = useState(true)
 
   const [inputValue, setInputValue] = useState({
     email: 'vasia@pupkin.ru',
@@ -39,40 +38,48 @@ export default function Login () {
   const formFile =
     inputValue.email.trim() !== '' && inputValue.password.trim() !== ''
 
-  const showError = (errorText: string) => {
+  const alert = (errorText: string) => {
     setError(errorText)
     setTimeout(() => setError(undefined), 5000)
   }
 
-  const submit = () => {
+  const submit = async () => {
+    // Login/parol tekshirish
     if (
       inputValue.email !== 'vasia@pupkin.ru' ||
       inputValue.password !== '12345678'
     ) {
-      showError('Login or Password error')
-    } else {
-      setLogin({ email: inputValue.email, password: inputValue.password })
+      alert('Login or Password error')
+      return
     }
+
+    // Location ruxsatini so‘rash
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Iltimos, location ruxsatini yoqing!')
+      return
+    }
+
+    // GPS yoqilganligini tekshirish
+    const gpsEnabled = await Location.hasServicesEnabledAsync()
+    if (!gpsEnabled) {
+      alert('Iltimos, telefoningizda GPS-ni yoqing!')
+      return
+    }
+
+    // Hammasi OK bo‘lsa — login qilish
+    setLogin({ email: inputValue.email, password: inputValue.password })
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} backgroundColor={Colors.light} />
       <Notification error={error} />
-
-      {/* Logo */}
       <Image
         style={styles.logo}
         source={require('../../assets/images/logo.png')}
         resizeMode='contain'
       />
-
-      {/* Location modal */}
-      <Modal visible={showLocationModal} transparent animationType='slide'>
-        <View style={styles.modalBackground}>
-          <LocationPages onClose={() => setShowLocationModal(false)} />
-        </View>
-      </Modal>
 
       <View style={styles.content}>
         <Text style={styles.login__title}>Get Started now</Text>
@@ -81,7 +88,6 @@ export default function Login () {
         </Text>
       </View>
 
-      {/* Login / Signup toggle */}
       <View style={styles.pass}>
         <Buttons
           text='Log in'
@@ -97,9 +103,8 @@ export default function Login () {
 
       {active === 'login' && (
         <>
-          {/* Inputs */}
           <View style={styles.collection}>
-            {/* Email */}
+            {/* email */}
             <View>
               <Text style={styles.email_text}>Email</Text>
               <Inputs
@@ -112,7 +117,7 @@ export default function Login () {
               />
             </View>
 
-            {/* Password */}
+            {/* password */}
             <View>
               <Text style={styles.email_text}>Password</Text>
               <Inputs
@@ -127,7 +132,7 @@ export default function Login () {
               />
             </View>
 
-            {/* Checkbox + Forgot */}
+            {/* checkbox */}
             <View style={styles.checked}>
               <Pressable
                 style={styles.flex}
@@ -142,12 +147,12 @@ export default function Login () {
                 onPress={() => router.replace('/forgot/forgot.password')}
                 style={styles.forgot}
               >
-                Forgot Password?
+                Forgot Password ?
               </Text>
             </View>
           </View>
 
-          {/* Login button */}
+          {/* login button */}
           <Pressable
             onPress={submit}
             style={[
@@ -165,19 +170,19 @@ export default function Login () {
               {!isLoading ? (
                 'Log in'
               ) : (
-                <ActivityIndicator color={Colors.light} size='large' />
+                <ActivityIndicator color={Colors.light} size={'large'} />
               )}
             </Text>
           </Pressable>
 
-          {/* Divider */}
+          {/* line */}
           <View style={styles.line}>
             <View style={styles.to__line} />
             <Text style={styles.with}>Or login with</Text>
             <View style={styles.to__line} />
           </View>
 
-          {/* Social logins */}
+          {/* applications */}
           <View style={styles.applications}>
             <View style={styles.app__child}>
               <Google />
@@ -254,15 +259,16 @@ const styles = StyleSheet.create({
   login_btn: {
     width: '100%',
     height: 48,
+    backgroundColor: Colors.boder,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10
   },
   login_text: {
     fontSize: 14,
+    color: Colors.login_btn,
     fontFamily: 'Exo500'
   },
-
   line: {
     width: '100%',
     flexDirection: 'row',
@@ -325,11 +331,5 @@ const styles = StyleSheet.create({
     color: Colors.forgot,
     fontFamily: 'Exo600',
     fontSize: 12
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 })

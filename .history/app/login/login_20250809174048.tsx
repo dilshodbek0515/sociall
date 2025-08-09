@@ -24,7 +24,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import LocationPages from '../location'
 
-export default function Login () {
+export default function Login() {
   const [checkbox, setCheckbox] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const [active, setActive] = useState<'login' | 'signup'>('signup')
@@ -105,8 +105,8 @@ export default function Login () {
               <Inputs
                 value={inputValue.email}
                 placeholder='Enter your email'
-                onChangeText={value =>
-                  setInputValue(prev => ({ ...prev, email: value }))
+                onChangeText={(value) =>
+                  setInputValue((prev) => ({ ...prev, email: value }))
                 }
                 redError={!!error}
               />
@@ -120,8 +120,8 @@ export default function Login () {
                 placeholder='Enter your password'
                 keyboardType='numeric'
                 value={inputValue.password}
-                onChangeText={value =>
-                  setInputValue(prev => ({ ...prev, password: value }))
+                onChangeText={(value) =>
+                  setInputValue((prev) => ({ ...prev, password: value }))
                 }
                 redError={!!error}
               />
@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Exo500'
   },
-
   line: {
     width: '100%',
     flexDirection: 'row',

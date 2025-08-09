@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Image,
-  Modal,
   Pressable,
   StatusBar,
   StyleSheet,
@@ -9,7 +8,8 @@ import {
   View
 } from 'react-native'
 import Inputs from '../../shared/inputs/Inputs'
-import { Gap, Padding, Colors } from '../../shared/tokkens'
+import { Gap, Padding } from '../../shared/tokkens'
+import { Colors } from '../../shared/tokkens'
 import { useState } from 'react'
 import Google from '../../assets/icons/google'
 import Facebook from '../../assets/icons/facebook'
@@ -22,34 +22,39 @@ import Buttons from '../../shared/buttons/Buttons'
 import Signup from '../signup/signup'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
-import LocationPages from '../location'
-
+import Location from '../location'
+import { BlurView } from 'expo-blur'
 export default function Login () {
-  const [checkbox, setCheckbox] = useState(false)
+  const [checkbox, setCheckbox] = useState<boolean>(false)
   const [error, setError] = useState<string | undefined>()
-  const [active, setActive] = useState<'login' | 'signup'>('signup')
-  const [{ isLoading }, setLogin] = useAtom(loginAtom)
-  const [showLocationModal, setShowLocationModal] = useState(true)
-
+  const [active, setActive] = useState<boolean | string>('signup')
+  const [{ isLoading, token, error: err }, setLogin] = useAtom(loginAtom)
+  // inputdan qiymat olish
   const [inputValue, setInputValue] = useState({
     email: 'vasia@pupkin.ru',
     password: '12345678'
   })
 
+  // inputlarda qiymat bor yuqligini tekshirish
   const formFile =
     inputValue.email.trim() !== '' && inputValue.password.trim() !== ''
 
-  const showError = (errorText: string) => {
+  // xatolik qaytarish
+  const alert = (errorText: string) => {
     setError(errorText)
-    setTimeout(() => setError(undefined), 5000)
+
+    setTimeout(() => {
+      setError(undefined)
+    }, 5000)
   }
 
+  // input qiymatlarini tekshirish
   const submit = () => {
     if (
-      inputValue.email !== 'vasia@pupkin.ru' ||
-      inputValue.password !== '12345678'
+      (inputValue.email !== 'vasia@pupkin.ru',
+      inputValue.password !== '12345678')
     ) {
-      showError('Login or Password error')
+      alert('Login or Password error')
     } else {
       setLogin({ email: inputValue.email, password: inputValue.password })
     }
@@ -59,20 +64,11 @@ export default function Login () {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} backgroundColor={Colors.light} />
       <Notification error={error} />
-
-      {/* Logo */}
       <Image
         style={styles.logo}
         source={require('../../assets/images/logo.png')}
         resizeMode='contain'
       />
-
-      {/* Location modal */}
-      <Modal visible={showLocationModal} transparent animationType='slide'>
-        <View style={styles.modalBackground}>
-          <LocationPages onClose={() => setShowLocationModal(false)} />
-        </View>
-      </Modal>
 
       <View style={styles.content}>
         <Text style={styles.login__title}>Get Started now</Text>
@@ -81,7 +77,6 @@ export default function Login () {
         </Text>
       </View>
 
-      {/* Login / Signup toggle */}
       <View style={styles.pass}>
         <Buttons
           text='Log in'
@@ -97,37 +92,43 @@ export default function Login () {
 
       {active === 'login' && (
         <>
-          {/* Inputs */}
+          {/* inputs */}
           <View style={styles.collection}>
-            {/* Email */}
+            {/* email */}
             <View>
               <Text style={styles.email_text}>Email</Text>
               <Inputs
                 value={inputValue.email}
                 placeholder='Enter your email'
                 onChangeText={value =>
-                  setInputValue(prev => ({ ...prev, email: value }))
+                  setInputValue(props => ({
+                    ...props,
+                    email: value
+                  }))
                 }
                 redError={!!error}
               />
             </View>
 
-            {/* Password */}
+            {/* password */}
             <View>
-              <Text style={styles.email_text}>Password</Text>
+              <Text style={styles.email_text}>Pssword</Text>
               <Inputs
                 isPassword
                 placeholder='Enter your password'
                 keyboardType='numeric'
                 value={inputValue.password}
                 onChangeText={value =>
-                  setInputValue(prev => ({ ...prev, password: value }))
+                  setInputValue(props => ({
+                    ...props,
+                    password: value
+                  }))
                 }
                 redError={!!error}
               />
             </View>
 
-            {/* Checkbox + Forgot */}
+            {/* checkbox */}
             <View style={styles.checked}>
               <Pressable
                 style={styles.flex}
@@ -142,17 +143,19 @@ export default function Login () {
                 onPress={() => router.replace('/forgot/forgot.password')}
                 style={styles.forgot}
               >
-                Forgot Password?
+                Forgot Password ?
               </Text>
             </View>
           </View>
 
-          {/* Login button */}
+          {/* login button */}
           <Pressable
             onPress={submit}
             style={[
               styles.login_btn,
-              { backgroundColor: formFile ? Colors.active_btn : Colors.boder }
+              {
+                backgroundColor: formFile ? Colors.active_btn : Colors.boder
+              }
             ]}
             disabled={!formFile}
           >
@@ -165,19 +168,19 @@ export default function Login () {
               {!isLoading ? (
                 'Log in'
               ) : (
-                <ActivityIndicator color={Colors.light} size='large' />
+                <ActivityIndicator color={Colors.light} size={'large'} />
               )}
             </Text>
           </Pressable>
 
-          {/* Divider */}
+          {/* line */}
           <View style={styles.line}>
             <View style={styles.to__line} />
             <Text style={styles.with}>Or login with</Text>
             <View style={styles.to__line} />
           </View>
 
-          {/* Social logins */}
+          {/* applications */}
           <View style={styles.applications}>
             <View style={styles.app__child}>
               <Google />
@@ -196,6 +199,11 @@ export default function Login () {
       )}
 
       {active === 'signup' && <Signup />}
+
+      <View style={styles.location}>
+        <BlurView intensity={70} tint='dark' style={StyleSheet.absoluteFill} />
+        <Location />
+      </View>
     </SafeAreaView>
   )
 }
@@ -207,24 +215,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: Padding.padding24,
     gap: Gap.gap24,
-    paddingTop: 24
+    paddingTop: 24,
+    position: 'relative'
   },
+
   collection: {
     width: '100%',
     gap: Gap.gap16
   },
+
   content: {
     gap: Gap.gap12
   },
+
   logo: {
     width: 27
   },
+
   login__title: {
     color: Colors.black,
     fontSize: 32,
     fontFamily: 'Exo700',
     textAlign: 'center'
   },
+
   login__description: {
     color: Colors.gray,
     fontSize: 12,
@@ -232,34 +246,42 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: 200
   },
+
   pass: {
     flexDirection: 'row',
     width: '100%',
     height: 36,
     backgroundColor: Colors.pass,
+    boxShadow: '0px 3px 6px 0px #00000005 inset',
     borderRadius: 7,
     padding: 2
   },
+
   email_text: {
     fontSize: 12,
     fontFamily: 'Exo500',
     color: Colors.gray,
     marginBottom: 2
   },
+
   checked: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+
   login_btn: {
     width: '100%',
     height: 48,
+    backgroundColor: Colors.boder,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10
   },
+
   login_text: {
     fontSize: 14,
+    color: Colors.login_btn,
     fontFamily: 'Exo500'
   },
 
@@ -269,34 +291,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+
   with: {
     fontFamily: 'Exo400',
     color: Colors.gray,
     fontSize: 12
   },
+
   to__line: {
     borderWidth: 0.5,
     backgroundColor: Colors.boder,
     width: '33%'
   },
+
   applications: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+
   app__child: {
     width: 70,
     height: 48,
     borderRadius: 10,
+    boxShadow: '0px -3px 6px 0px #F4F5FA99 inset',
     alignItems: 'center',
     justifyContent: 'center'
   },
+
   flex: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5
   },
+
   checkbox: {
     width: 12,
     height: 12,
@@ -307,29 +336,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.light
   },
+
   checkedBox: {
     backgroundColor: Colors.outline,
     borderColor: Colors.outline
   },
+
   checkmark: {
     color: Colors.light,
     fontSize: 8,
     fontWeight: 'bold'
   },
+
   label: {
     color: Colors.gray,
     fontFamily: 'Exo500',
     fontSize: 12
   },
+
   forgot: {
     color: Colors.forgot,
     fontFamily: 'Exo600',
     fontSize: 12
   },
-  modalBackground: {
+
+  location: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center'
+    position: 'absolute',
   }
 })
