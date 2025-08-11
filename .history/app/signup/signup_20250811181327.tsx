@@ -1,5 +1,4 @@
 import {
-  Animated,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -8,32 +7,16 @@ import {
   View
 } from 'react-native'
 import { Colors, Gap } from '../../shared/tokkens'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import EyeOpenIcon from '../../assets/icons/icons-open'
 import EyeClosedIcon from '../../assets/icons/icons-closed'
 import IntlPhoneInput from 'react-native-intl-phone-input'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-export default function Signup () {
+export default function Signup ({ iin, out }: any) {
   const [password, setPassword] = useState<boolean>(false)
-  const scale = useRef(new Animated.Value(1)).current
 
-  const onPressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.9, // kichrayadi
-      useNativeDriver: true
-    }).start()
-  }
-
-  const onPressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1, // qayta kattalashadi
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true
-    }).start()
-  }
   const [form, setForm] = useState({
     name: '',
     lastName: '',
@@ -119,31 +102,29 @@ export default function Signup () {
           </Pressable>
         </View>
 
-        <Animated.View style={{ transform: [{ scale }] }}>
-          <Pressable
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
-            onPress={() => router.push('/privacy/privacy')}
+        <Pressable
+          onPressIn={iin}
+          onPressOut={out}
+          onPress={() => router.push('/privacy/privacy')}
+          style={[
+            styles.login_btn,
+            {
+              backgroundColor: isValid ? Colors.active_btn : Colors.boder
+            }
+          ]}
+          disabled={!isValid}
+        >
+          <Text
             style={[
-              styles.login_btn,
+              styles.login_text,
               {
-                backgroundColor: isValid ? Colors.active_btn : Colors.boder
+                color: isValid ? Colors.light : Colors.login_btn
               }
             ]}
-            disabled={!isValid}
           >
-            <Text
-              style={[
-                styles.login_text,
-                {
-                  color: isValid ? Colors.light : Colors.login_btn
-                }
-              ]}
-            >
-              Register
-            </Text>
-          </Pressable>
-        </Animated.View>
+            Register
+          </Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   )

@@ -53,13 +53,8 @@ export default function Welcome () {
         resizeMode='contain'
       />
       <Text style={styles.title}>SHARE - INSPIRE - CONNECT</Text>
-      <Animated.View style={{ transform: [{ scale }] }}>
-        <Pressable
-          onPress={handleStart}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-          style={styles.started}
-        >
+      <Animated.View style={{ transform: [scale] }}>
+        <Pressable onPress={handleStart} style={styles.started}>
           <Text style={styles.btnText}>GET STARTED</Text>
         </Pressable>
       </Animated.View>

@@ -164,10 +164,8 @@ export default function Login () {
           </View>
 
           {/* Login button */}
-          <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
+          <Animated.View style={{ transform: [{ scale }] }}>
             <Pressable
-              onPressIn={onPressIn}
-              onPressOut={onPressOut}
               onPress={submit}
               style={[
                 styles.login_btn,

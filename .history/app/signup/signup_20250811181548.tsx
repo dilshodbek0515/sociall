@@ -8,7 +8,7 @@ import {
   View
 } from 'react-native'
 import { Colors, Gap } from '../../shared/tokkens'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import EyeOpenIcon from '../../assets/icons/icons-open'
 import EyeClosedIcon from '../../assets/icons/icons-closed'
 import IntlPhoneInput from 'react-native-intl-phone-input'
@@ -17,23 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Signup () {
   const [password, setPassword] = useState<boolean>(false)
-  const scale = useRef(new Animated.Value(1)).current
 
-  const onPressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.9, // kichrayadi
-      useNativeDriver: true
-    }).start()
-  }
-
-  const onPressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1, // qayta kattalashadi
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true
-    }).start()
-  }
   const [form, setForm] = useState({
     name: '',
     lastName: '',
@@ -121,8 +105,8 @@ export default function Signup () {
 
         <Animated.View style={{ transform: [{ scale }] }}>
           <Pressable
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
+            onPressIn={iin}
+            onPressOut={out}
             onPress={() => router.push('/privacy/privacy')}
             style={[
               styles.login_btn,

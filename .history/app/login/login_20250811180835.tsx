@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import Inputs from '../../shared/inputs/Inputs'
 import { Gap, Padding, Colors } from '../../shared/tokkens'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import Google from '../../assets/icons/google'
 import Facebook from '../../assets/icons/facebook'
 import Iphone from '../../assets/icons/iphone'
@@ -31,23 +31,7 @@ export default function Login () {
   const [active, setActive] = useState<'login' | 'signup'>('signup')
   const [{ isLoading }, setLogin] = useAtom(loginAtom)
   const [showLocationModal, setShowLocationModal] = useState(true)
-  const scale = useRef(new Animated.Value(1)).current
 
-  const onPressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.9, // kichrayadi
-      useNativeDriver: true
-    }).start()
-  }
-
-  const onPressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1, // qayta kattalashadi
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true
-    }).start()
-  }
   const [inputValue, setInputValue] = useState({
     email: 'vasia@pupkin.ru',
     password: '12345678'
@@ -164,10 +148,8 @@ export default function Login () {
           </View>
 
           {/* Login button */}
-          <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
+          <Animated.View>
             <Pressable
-              onPressIn={onPressIn}
-              onPressOut={onPressOut}
               onPress={submit}
               style={[
                 styles.login_btn,

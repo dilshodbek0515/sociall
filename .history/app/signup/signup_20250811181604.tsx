@@ -121,8 +121,8 @@ export default function Signup () {
 
         <Animated.View style={{ transform: [{ scale }] }}>
           <Pressable
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
+            onPressIn={iin}
+            onPressOut={out}
             onPress={() => router.push('/privacy/privacy')}
             style={[
               styles.login_btn,

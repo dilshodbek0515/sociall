@@ -215,7 +215,7 @@ export default function Login () {
         </>
       )}
 
-      {active === 'signup' && <Signup />}
+      {active === 'signup' && <Signup iin={onPressIn} out={onPressOut} />}
     </SafeAreaView>
   )
 }

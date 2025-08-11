@@ -48,41 +48,23 @@ export default function LocationPages ({ onClose }: { onClose: () => void }) {
     text = errorMsg
   }
 
-  const scaleSkip = useRef(new Animated.Value(1)).current
-  const scaleAllow = useRef(new Animated.Value(1)).current
+  const scale = useRef(new Animated.Value(1)).current
 
-  // const onPressIn = () => {
-  //   Animated.spring(scale, {
-  //     toValue: 0.9,
-  //     useNativeDriver: true
-  //   }).start()
-  // }
+  const onPressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.9,
+      useNativeDriver: true
+    }).start()
+  }
 
-  // const onPressOut = () => {
-  //   Animated.spring(scale, {
-  //     toValue: 1,
-  //     friction: 3,
-  //     tension: 40,
-  //     useNativeDriver: true
-  //   }).start()
-  // }
-
-  // const inAllow = () => {
-  //   Animated.spring(scaleAllow, {
-  //     toValue: 0.9,
-  //     useNativeDriver: true
-  //   }).start()
-  // }
-
-  // const outAllow = () => {
-  //   Animated.spring(scaleAllow, {
-  //     toValue: 1,
-  //     friction: 3,
-  //     tension: 40,
-  //     useNativeDriver: true
-  //   }).start()
-  // }
-
+  const onPressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
+      useNativeDriver: true
+    }).start()
+  }
   return (
     <View style={styles.container}>
       <Image
@@ -92,25 +74,11 @@ export default function LocationPages ({ onClose }: { onClose: () => void }) {
       <Text style={styles.paragraph}>Location</Text>
       <Text style={styles.paragraph_text}>{text}</Text>
 
-      <Animated.View
-        style={{ transform: [{ scale: scaleAllow }], width: '100%' }}
-      >
+      <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
         <Pressable
           style={styles.allow}
-          onPressIn={() =>
-            Animated.spring(scaleAllow, {
-              toValue: 0.9,
-              useNativeDriver: true
-            }).start()
-          }
-          onPressOut={() =>
-            Animated.spring(scaleAllow, {
-              toValue: 1,
-              friction: 3,
-              tension: 40,
-              useNativeDriver: true
-            }).start()
-          }
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
           onPress={requestLocation}
         >
           <Text
@@ -121,25 +89,12 @@ export default function LocationPages ({ onClose }: { onClose: () => void }) {
         </Pressable>
       </Animated.View>
 
-      <Animated.View
-        style={{ transform: [{ scale: scaleSkip }], width: '100%' }}
-      >
+      {/* Skip tugmasi */}
+      <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
         <Pressable
           style={styles.skip}
-          onPressIn={() =>
-            Animated.spring(scaleSkip, {
-              toValue: 0.9,
-              useNativeDriver: true
-            }).start()
-          }
-          onPressOut={() =>
-            Animated.spring(scaleSkip, {
-              toValue: 1,
-              friction: 3,
-              tension: 40,
-              useNativeDriver: true
-            }).start()
-          }
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
           onPress={onClose}
         >
           <Text

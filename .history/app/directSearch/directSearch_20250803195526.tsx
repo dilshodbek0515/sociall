@@ -51,7 +51,7 @@ export default function DirectSearch () {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'dark-content'} backgroundColor='transparent' />
+      <StatusBar barStyle={'dark-content'} backgroundColor={Colors.light} />
 
       <View style={styles.header}>
         <Pressable onPress={() => router.back()}>
