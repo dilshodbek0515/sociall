@@ -34,7 +34,7 @@ export const loginAtom = atom(
 
       router.replace('/')
       set(loginState, {
-        token: data.accessToken,
+        token: data.access,
         isLoading: false,
         error: null
       })

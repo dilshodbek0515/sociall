@@ -23,34 +23,31 @@ import Buttons from '../../shared/buttons/Buttons'
 import Signup from '../signup/signup'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
-import LocationPages from '../location'
-
 export default function Login () {
   const [checkbox, setCheckbox] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const [active, setActive] = useState<'login' | 'signup'>('signup')
   const [{ isLoading }, setLogin] = useAtom(loginAtom)
-  const [showLocationModal, setShowLocationModal] = useState(true)
   const scale = useRef(new Animated.Value(1)).current
 
   const onPressIn = () => {
     Animated.spring(scale, {
-      toValue: 0.9, // kichrayadi
+      toValue: 0.9,
       useNativeDriver: true
     }).start()
   }
 
   const onPressOut = () => {
     Animated.spring(scale, {
-      toValue: 1, // qayta kattalashadi
+      toValue: 1,
       friction: 3,
       tension: 40,
       useNativeDriver: true
     }).start()
   }
   const [inputValue, setInputValue] = useState({
-    email: 'vasia@pupkin.ru',
-    password: '12345678'
+    email: '',
+    password: ''
   })
 
   const formFile =
@@ -62,10 +59,7 @@ export default function Login () {
   }
 
   const submit = () => {
-    if (
-      inputValue.email !== 'vasia@pupkin.ru' ||
-      inputValue.password !== '12345678'
-    ) {
+    if (!formFile) {
       showError('Login or Password error')
     } else {
       setLogin({ email: inputValue.email, password: inputValue.password })
@@ -84,13 +78,6 @@ export default function Login () {
         resizeMode='contain'
       />
 
-      {/* Location modal */}
-      <Modal visible={showLocationModal} transparent animationType='slide'>
-        <View style={styles.modalBackground}>
-          <LocationPages onClose={() => setShowLocationModal(false)} />
-        </View>
-      </Modal>
-
       <View style={styles.content}>
         <Text style={styles.login__title}>Get Started now</Text>
         <Text style={styles.login__description}>
@@ -98,7 +85,7 @@ export default function Login () {
         </Text>
       </View>
 
-      {/* Login / Signup toggle */}
+      {/* Login / Signup choice */}
       <View style={styles.pass}>
         <Buttons
           text='Log in'

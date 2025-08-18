@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Animated,
   Pressable,
   ScrollView,
@@ -14,21 +15,25 @@ import EyeClosedIcon from '../../assets/icons/icons-closed'
 import IntlPhoneInput from 'react-native-intl-phone-input'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import { useAtom } from 'jotai'
+import { registerAtom } from '../../entities/auth/register/register.state'
+import { Notification } from '../../shared/notifacation/error.notifacation'
 export default function Signup () {
   const [password, setPassword] = useState<boolean>(false)
   const scale = useRef(new Animated.Value(1)).current
+  const [{ isLoading }, setRegister] = useAtom(registerAtom)
+  const [error, setError] = useState<string | undefined>()
 
   const onPressIn = () => {
     Animated.spring(scale, {
-      toValue: 0.9, // kichrayadi
+      toValue: 0.9,
       useNativeDriver: true
     }).start()
   }
 
   const onPressOut = () => {
     Animated.spring(scale, {
-      toValue: 1, // qayta kattalashadi
+      toValue: 1,
       friction: 3,
       tension: 40,
       useNativeDriver: true
@@ -42,6 +47,10 @@ export default function Signup () {
     password: ''
   })
 
+  const showError = (errorText: string) => {
+    setError(errorText)
+    setTimeout(() => setError(undefined), 5000)
+  }
   const isValid =
     form.name.trim() !== '' &&
     form.lastName.trim() !== '' &&
@@ -49,8 +58,24 @@ export default function Signup () {
     form.phone.trim() !== '' &&
     form.password.trim() !== ''
 
+  const submitRegister = () => {
+    if (!isValid) {
+      showError('Please fill all fields')
+    } else {
+      setRegister({
+        name: form.name,
+        last_name: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        password: form.password
+      })
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Notification error={error} />
+
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -123,7 +148,7 @@ export default function Signup () {
           <Pressable
             onPressIn={onPressIn}
             onPressOut={onPressOut}
-            onPress={() => router.push('/privacy/privacy')}
+            onPress={submitRegister}
             style={[
               styles.login_btn,
               {
@@ -140,7 +165,11 @@ export default function Signup () {
                 }
               ]}
             >
-              Register
+              {!isLoading ? (
+                'Register'
+              ) : (
+                <ActivityIndicator color={Colors.light} size='large' />
+              )}
             </Text>
           </Pressable>
         </Animated.View>
