@@ -46,8 +46,8 @@ export default function Login () {
     }).start()
   }
   const [inputValue, setInputValue] = useState({
-    email: '',
-    password: ''
+    email: 'dilshodbekk@gmail.com',
+    password: '05150515Dd'
   })
 
   const formFile =
